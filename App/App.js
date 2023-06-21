@@ -4,12 +4,15 @@ import { Piso0 } from './Piso0';
 import { Piso1 } from './Piso1';
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { About } from './About';
 
 
 export const AppContext = React.createContext()
 
 export default function App() {
-  const tabs = createBottomTabNavigator()
+  const Tabs = createBottomTabNavigator()
   const [piso, setPiso] = React.useState(0)
   const [controls, setControls] = React.useState({
     ascensor: 0,
@@ -35,6 +38,7 @@ export default function App() {
         ...actualValues,
         [control]: value
       });
+      // TODO LLamar API
     })
   }
 
@@ -43,7 +47,46 @@ export default function App() {
       <View style={{ width: "100%", alignItems: "center", flexDirection: "column", display: "flex" }}>
         <View style={{ width: "100%", height: "100%" }}>
           <StatusBar style="auto" />
-          {piso ? <Piso1 /> : <Piso0 />}
+          <NavigationContainer>
+            <Tabs.Navigator
+              initialRouteName="Feed"
+              screenOptions={{
+                tabBarActiveTintColor: '#e91e63',
+              }}
+            >
+              <Tabs.Screen
+                name="Planta Baja"
+                component={Piso0}
+                options={{
+                  tabBarLabel: 'Planta Baja',
+                  tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="numeric-0-box" color={color} size={size} />
+                  ),
+                }}
+              />
+              <Tabs.Screen
+                name="Piso 1"
+                component={Piso1}
+                options={{
+                  tabBarLabel: 'Piso 1',
+                  tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="numeric-1-box" color={color} size={size} />
+                  ),
+                }}
+              />
+              <Tabs.Screen
+                name="Acerca de..."
+                component={About}
+                options={{
+                  tabBarLabel: 'Acerca de...',
+                  tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="beaker-question" color={color} size={size} />
+                  ),
+                }}
+              />
+            </Tabs.Navigator>
+          </NavigationContainer>
+          {/* {piso ? <Piso1 /> : <Piso0 />} */}
         </View>
       </View>
     </AppContext.Provider>
