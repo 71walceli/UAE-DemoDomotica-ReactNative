@@ -42,8 +42,8 @@ export default function App() {
   }
 
   const styles = StyleSheet.create({
-    fullSize: { width: "100%", height: "100%" },
-    centerElements: { width: "100%", alignItems: "center", flexDirection: "column" }
+    centerElements: { alignItems: "center", flexDirection: "column", width: "100%", },
+    fullSize: { height: "100%", width: "100%" },
   })
   return <>
     <AppContext.Provider value={{ controls, handleControlChange }}>
