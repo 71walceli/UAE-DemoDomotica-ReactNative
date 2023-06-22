@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Piso0 } from './Piso0';
 import { Piso1 } from './Piso1';
 import React from 'react';
@@ -9,26 +9,25 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { About } from './About';
 
 
+
 export const AppContext = React.createContext()
 
 export default function App() {
   const Tabs = createBottomTabNavigator()
-  const [piso, setPiso] = React.useState(0)
   const [controls, setControls] = React.useState({
-    ascensor: 0,
-    banio_p0: 1,
-    comedor_p0: 1,
-    cocina: 1,
-    sala_p0: 1,
-    balcon: 1,
-    habitacion_invitados: 1,
-    closet: 1,
-    banio_p1: 1,
-    comedor_p1: 1,
-    cocina: 1,
-    sala_p1: 1,
-    banio_p1_2: 1,
-    habitacion_principal: 1,
+    ascensor: false,
+    banio_p0: true,
+    comedor_p0: true,
+    cocina: true,
+    sala_p0: true,
+    balcon: true,
+    habitacion_invitados: true,
+    closet: true,
+    banio_p1: true,
+    comedor_p1: true,
+    sala_p1: true,
+    banio_p1_2: true,
+    habitacion_principal: true,
   })
   
   const handleControlChange = (control, value) => {
@@ -42,14 +41,18 @@ export default function App() {
     })
   }
 
+  const styles = StyleSheet.create({
+    fullSize: { width: "100%", height: "100%" },
+    centerElements: { width: "100%", alignItems: "center", flexDirection: "column" }
+  })
   return <>
     <AppContext.Provider value={{ controls, handleControlChange }}>
-      <View style={{ width: "100%", alignItems: "center", flexDirection: "column", display: "flex" }}>
-        <View style={{ width: "100%", height: "100%" }}>
+      <View style={styles.centerElements}>
+        <View style={styles.fullSize}>
           <StatusBar style="auto" />
           <NavigationContainer>
             <Tabs.Navigator
-              initialRouteName="Feed"
+              initialRouteName="Acerca de..."
               screenOptions={{
                 tabBarActiveTintColor: '#e91e63',
               }}
@@ -65,10 +68,10 @@ export default function App() {
                 }}
               />
               <Tabs.Screen
-                name="Piso 1"
+                name="Piso true"
                 component={Piso1}
                 options={{
-                  tabBarLabel: 'Piso 1',
+                  tabBarLabel: 'Piso true',
                   tabBarIcon: ({ color, size }) => (
                     <MaterialCommunityIcons name="numeric-1-box" color={color} size={size} />
                   ),
