@@ -6,8 +6,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { About } from './About';
-
+import { Config } from './Config';
 
 
 export const AppContext = React.createContext()
@@ -29,6 +28,9 @@ export default function App() {
     banio_p1_2: true,
     habitacion_principal: true,
   })
+  const [config, setConfig] = React.useState({
+    apiAddress: "1.1.1.1",
+  })
   
   const handleControlChange = (control, value) => {
     setControls(actualValues => {
@@ -46,13 +48,13 @@ export default function App() {
     fullSize: { height: "100%", width: "100%" },
   })
   return <>
-    <AppContext.Provider value={{ controls, handleControlChange }}>
+    <AppContext.Provider value={{ controls, handleControlChange, config, setConfig }}>
       <View style={styles.centerElements}>
         <View style={styles.fullSize}>
           <StatusBar style="auto" />
           <NavigationContainer>
             <Tabs.Navigator
-              initialRouteName="Acerca de..."
+              initialRouteName="Planta Baja"
               screenOptions={{
                 tabBarActiveTintColor: '#e91e63',
               }}
@@ -78,8 +80,8 @@ export default function App() {
                 }}
               />
               <Tabs.Screen
-                name="Acerca de..."
-                component={About}
+                name="Configuracióón"
+                component={Config}
                 options={{
                   tabBarLabel: 'Acerca de...',
                   tabBarIcon: ({ color, size }) => (
