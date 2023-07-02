@@ -1,4 +1,4 @@
-import { Switch as RNSwitch } from 'react-native-switch';
+import { Switch as RNSwitch, Text, View } from 'react-native';
 import { lightBulbOff, lightBulbOn } from './Assets';
 import { Image, StyleSheet } from "react-native"
 import React from 'react';
@@ -12,8 +12,8 @@ export const Switch = ({controlId, innerCircleContent, ...props}) => {
   return <>
     <RNSwitch
       disabled={false}
-      activeText={'ON'}
-      inActiveText={'OFF'}
+      activeText='ON'
+      inActiveText='OFF'
       renderInsideCircle={() => innerCircleContent}
       value={controls?.[controlId]} 
       onValueChange={v => handleControlChange(controlId, v)}
@@ -29,33 +29,39 @@ Switch.propTypes = {
 export const LightbulbSwitch = ({controlId, ...props}) => {
   const {controls} = React.useContext(AppContext)
   const style = StyleSheet.create({
-    lightbulbSwitch: { width: 24, height: 24 }
+    lightbulbSwitch: { width: 16, height: 16 }
   })
 
-  return <>
+  const iconOn = <Image
+    style={StyleSheet.compose(style.lightbulbSwitch)}
+    source={lightBulbOn} 
+  />;
+  const iconOff = <Image
+    style={StyleSheet.compose(style.lightbulbSwitch)}
+    source={lightBulbOff} 
+  />;
+  return <View style={StyleSheet.compose({ display: "flex", flexDirection: "column", alignItems: "center" })}>
     <Switch
       controlId={controlId}
-      innerCircleContent={<Image 
-        style={StyleSheet.compose(style.lightbulbSwitch)} 
-        source={`${controls?.[controlId] ? lightBulbOn : lightBulbOff}`}
-        />}
       {...props}
     /> 
-  </>  
+    {controls[controlId] && iconOn || iconOff}
+  </View>
 }
 LightbulbSwitch.propTypes = {
   controlId: PropTypes.string.isRequired,
 }
 
 export const AscensorSwitch = ({controlId, ...props}) => {
-  return <>
-    <Switch 
-      activeText='P1'
-      inActiveText='PB'
+  const {controls} = React.useContext(AppContext)
+  
+  return <View style={StyleSheet.compose({ display: "flex", flexDirection: "column", alignItems: "center" })}>
+    <Switch
       controlId={controlId}
       {...props}
-    /> 
-  </>  
+    />
+    <Text>{controls[controlId] && "Piso 1" || "Planta Baja"}</Text> 
+  </View>
 }
 AscensorSwitch.propTypes = {
   controlId: PropTypes.string.isRequired,
