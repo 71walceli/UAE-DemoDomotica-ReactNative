@@ -10,8 +10,8 @@ export const Piso0 = () => {
       <View style={styles.Table}>
         <View style={styles.Table.row}>
           <View style={StyleSheet.compose( styles.Table.cell, 
-              { borderRight: 0, flexGrow: 1, flexShrink: 1, flexBasis: "40%" }
-            )}>
+            { borderRightWidth: 0, flexGrow: 1, flexShrink: 1, flexBasis: "40%" }
+          )}>
             <View style={styles.Table}>
               <View style={StyleSheet.compose(styles.Table.row, 
                   { flexGrow: 1, flexShrink: 1, flexBasis: "30%" })
@@ -42,7 +42,7 @@ export const Piso0 = () => {
           </View>
           <View style={StyleSheet.compose( styles.Table.cell, styles.Map.alleyVertical )} />
           <View style={StyleSheet.compose( styles.Table.cell, 
-            { borderLeft: 0, flexGrow: 1, flexShrink: 1, flexBasis: "40%" }
+            { borderLeftWidth: 0, flexGrow: 1, flexShrink: 1, flexBasis: "40%" }
           )}>
             <View style={styles.Table}>
               <View style={StyleSheet.compose(styles.Table.row, 
