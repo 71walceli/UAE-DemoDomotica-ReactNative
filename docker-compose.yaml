@@ -6,13 +6,25 @@ services:
       - TZ=America/Guayaquil
     hostname: uae-8sa-demo-feria-dev
     image: node:18
-    #networks:
-      #- 71walceli_https-proxy
-      #- uae-pis-backend
-    restart: unless-stopped
+    #restart: unless-stopped
     user: "1000:1000"
     ports:
       - 19000-19010:19000-19010
     volumes:
       - ./App:/App
     working_dir: /App
+  uae-8sa-demo-api:
+    #container_name: uae-8sa-demo-api
+    entrypoint: yarn start
+    environment:
+      - TZ=America/Guayaquil
+    hostname: uae-8sa-demo-api
+    image: node:18
+    #restart: unless-stopped
+    user: "1000:1000"
+    ports:
+      - 80:80/tcp
+    volumes:
+      - ./Api:/App
+    working_dir: /App
+
