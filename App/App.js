@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import { Piso0 } from './Piso0';
 import { Piso1 } from './Piso1';
@@ -14,33 +13,63 @@ export const AppContext = React.createContext()
 export default function App() {
   const Tabs = createBottomTabNavigator()
   const [controls, setControls] = React.useState({
-    ascensor: false,
-    banio_p0: true,
-    comedor_p0: true,
-    cocina: true,
-    sala_p0: true,
-    balcon: true,
-    habitacion_invitados: true,
-    closet: true,
-    banio_p1: true,
-    comedor_p1: true,
-    sala_p1: true,
-    banio_p1_2: true,
-    habitacion_principal: true,
+    ascensor: 0,
+    balcon: 1,
+    cocina: 1,
+    comedor: 1,
+    habInvitado: 1,
+    habPrincipal: 1,
+    sala: 1,
+    puerta: 0,
   })
   const [config, setConfig] = React.useState({
-    apiAddress: "1.1.1.1",
+    apiAddress: "192.168.0.100",
   })
   
-  const handleControlChange = (control, value) => {
-    setControls(actualValues => {
-      console.log({[control]: value})
-      return ({
-        ...actualValues,
-        [control]: value
-      });
-      // TODO LLamar API
-    })
+  const [ready, setReady] = React.useState(false)
+  React.useState(() => {
+    if (ready)
+      return
+    setReady(true)
+    loadState()
+    const timeout = setInterval(() => {
+      loadState();
+    }, 5000)
+    return () => clearInterval(timeout)
+  }, [ready])
+
+  const handleControlChange = (control, value, onCooldown) => {
+    const numberValue = Number(value);
+    const fetchUrl = 
+      ["balcon","cocina","comedor","habInvitado","habPrincipal","sala",].includes(control)
+        && `http://${config.apiAddress}/luz?nombre=${control}&estado=${numberValue}`
+      || ["ascensor",].includes(control) 
+        && `http://${config.apiAddress}/ascensor?piso=${1+numberValue}`
+      || ["puerta",].includes(control) 
+        && `http://${config.apiAddress}/${value ? "abrirPuerta" : "cerrarPuerta"}`
+    if (!fetchUrl) return
+    fetch(fetchUrl)
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          throw new Error(data.message)
+        }
+        else {
+          setControls(actualValues => {
+            console.log({[control]: value})
+            if (!onCooldown && control === "ascensor") {
+              setTimeout(() => handleControlChange(control, !value, true), 15000)
+            }
+            else if (!onCooldown && control === "puerta") {
+              setTimeout(() => handleControlChange(control, !value, true), 7000)
+            }
+            return ({
+              ...actualValues,
+              [control]: value
+            });
+          })
+        }
+      })
   }
 
   const styles = StyleSheet.create({
@@ -51,12 +80,13 @@ export default function App() {
     <AppContext.Provider value={{ controls, handleControlChange, config, setConfig }}>
       <View style={styles.centerElements}>
         <View style={styles.fullSize}>
-          <StatusBar style="auto" />
+          {/* <StatusBar style="auto" /> */}
           <NavigationContainer>
             <Tabs.Navigator
               initialRouteName="Planta Baja"
               screenOptions={{
                 tabBarActiveTintColor: '#e91e63',
+                //headerStyle: { color: "red" },
               }}
             >
               <Tabs.Screen
@@ -96,6 +126,17 @@ export default function App() {
       </View>
     </AppContext.Provider>
   </>
+
+  function loadState() {
+    fetch(`http://${config.apiAddress}`)
+      .then(response => response.json())
+      .then(response => setControls(() => {
+        const _state = {...response.state};
+        _state.ascensor -=  1
+        return _state;
+      }))
+      .catch(console.error);
+  }
 }
 
 

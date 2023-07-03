@@ -25,7 +25,6 @@ export const Piso1 = () => <>
                         <View style={styles.Table.row}>
                           <View style={styles.Table.cell}>
                             <Text>Baño</Text>
-                            <LightbulbSwitch controlId="banio_p1_2" />
                           </View>
                           <View style={StyleSheet.compose(styles.Table.cell, { borderWidth: 0, width: "50%" })} />
                         </View>
@@ -37,7 +36,7 @@ export const Piso1 = () => <>
                   >
                     <View style={StyleSheet.compose(styles.Table.cell, { borderWidth: 0 })}>
                       <Text>Habitación Invitados</Text>
-                      <LightbulbSwitch controlId="habitacion_invitados" />
+                      <LightbulbSwitch controlId="habInvitado" />
                     </View>
                   </View>
                 </View>
@@ -73,14 +72,12 @@ export const Piso1 = () => <>
                           <View style={StyleSheet.compose(styles.Table.cell, { borderWidth: 0, flexBasis: "25%" })} />
                           <View style={StyleSheet.compose(styles.Table.cell, { flexBasis: "75%" })}>
                             <Text>Baño</Text>
-                            <LightbulbSwitch controlId="banio_p1" />
                           </View>
                         </View>
                         <View style={styles.Table.row}>
                           <View style={StyleSheet.compose(styles.Table.cell, { borderWidth: 0, flexBasis: "25%" })} />
                           <View style={StyleSheet.compose(styles.Table.cell, { flexBasis: "75%" })}>
                             <Text>Closet</Text>
-                            <LightbulbSwitch controlId="closet" />
                           </View>
                         </View>
                       </View>
@@ -91,7 +88,7 @@ export const Piso1 = () => <>
                   >
                     <View style={StyleSheet.compose(styles.Table.cell, { borderWidth: 0 })}>
                       <Text>Habitación Principal</Text>
-                      <LightbulbSwitch controlId="habitacion_principal" />
+                      <LightbulbSwitch controlId="habPrincipal" />
                     </View>
                   </View>
                 </View>

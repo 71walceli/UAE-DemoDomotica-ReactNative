@@ -15,8 +15,8 @@ export const Switch = ({controlId, innerCircleContent, ...props}) => {
       activeText='ON'
       inActiveText='OFF'
       renderInsideCircle={() => innerCircleContent}
-      value={controls?.[controlId]} 
-      onValueChange={v => handleControlChange(controlId, v)}
+      value={Boolean(controls?.[controlId])} 
+      onValueChange={v => handleControlChange(controlId, Number(v))}
       {...props}
     /> 
   </>  
@@ -61,6 +61,18 @@ export const AscensorSwitch = ({controlId, ...props}) => {
       {...props}
     />
     <Text>{controls[controlId] && "Piso 1" || "Planta Baja"}</Text> 
+  </View>
+}
+
+export const PuertaSwitch = ({controlId, ...props}) => {
+  const {controls} = React.useContext(AppContext)
+  
+  return <View style={StyleSheet.compose({ display: "flex", flexDirection: "column", alignItems: "center" })}>
+    <Switch
+      controlId={controlId}
+      {...props}
+    />
+    <Text>{!controls[controlId] && "Cerrada" || "Abierta"}</Text> 
   </View>
 }
 AscensorSwitch.propTypes = {

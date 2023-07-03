@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { styles } from './styles';
 import React from 'react';
-import { AscensorSwitch, LightbulbSwitch } from './Switch';
+import { AscensorSwitch, LightbulbSwitch, PuertaSwitch } from './Switch';
 
 
 export const Piso0 = () => {
@@ -18,7 +18,6 @@ export const Piso0 = () => {
                 }>
                 <View style={styles.Table.cell}>
                   <Text>Baño</Text>
-                  <LightbulbSwitch controlId="banio_p0" />
                 </View>
               </View>
               <View style={StyleSheet.compose(styles.Table.row, 
@@ -26,7 +25,7 @@ export const Piso0 = () => {
                 }>
                 <View style={styles.Table.cell}>
                   <Text>Comedor</Text>
-                  <LightbulbSwitch controlId="comedor_p0" />
+                  <LightbulbSwitch controlId="comedor" />
                 </View>
               </View>
               <View style={StyleSheet.compose( styles.Table.row, styles.Map.alleyHorizontal )} />
@@ -40,7 +39,15 @@ export const Piso0 = () => {
               </View>
             </View>
           </View>
-          <View style={StyleSheet.compose( styles.Table.cell, styles.Map.alleyVertical )} />
+          <View style={
+            StyleSheet.compose( 
+              StyleSheet.compose(styles.Table.cell, { justifyContent: "flex-end" }), 
+              styles.Map.alleyVertical 
+            )
+          }>
+            <Text>Puerta</Text>
+            <PuertaSwitch controlId="puerta" />
+          </View>
           <View style={StyleSheet.compose( styles.Table.cell, 
             { borderLeftWidth: 0, flexGrow: 1, flexShrink: 1, flexBasis: "40%" }
           )}>
@@ -60,7 +67,7 @@ export const Piso0 = () => {
               )}>
                 <View style={styles.Table.cell}>
                   <Text>Sala</Text>
-                  <LightbulbSwitch controlId="sala_p0" />
+                  <LightbulbSwitch controlId="sala" />
                 </View>
               </View>
             </View>

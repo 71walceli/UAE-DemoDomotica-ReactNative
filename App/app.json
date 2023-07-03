@@ -21,7 +21,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./Assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "project.android.sourceDir": "/App"
     },
     "web": {
       "favicon": "./Assets/favicon.png"
