@@ -50,4 +50,36 @@ export const styles = StyleSheet.create({
       justifyContent: "center",
     },
   },
+  overlayStyle: { 
+    position: "absolute", 
+    zIndex: -1000, 
+    top: 0, 
+    left: 0, 
+    width: "100%", 
+    height: "100%", 
+  }
 });
+
+export const absolutePositionFactory = ({width, height, top, bottom, left, right}) => {
+  width = width === 0 && "0%" || width 
+  height = height === 0 && "0%" || height 
+  top = top === 0 && "0%" || top 
+  bottom = bottom === 0 && "0%" || bottom 
+  left = left === 0 && "0%" || left 
+  right = right === 0 && "0%" || right
+  if ((left && right) || (top && bottom)) {
+    throw new TypeError("Opposite offsets can't be set at the same time.")
+  }
+  if ( !((top && left) || (top && right) || (bottom && left) || (bottom && right) )) {
+    throw new TypeError("Must specify two non-opposite directions.")
+  }
+  return StyleSheet.compose({ 
+    position: "absolute",
+    width: width || "10%",
+    height: height || "10%",
+    top,
+    bottom,
+    left,
+    right,
+    })
+}
