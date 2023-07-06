@@ -14,7 +14,7 @@ const state = {
   habInvitado: 1,
   habPrincipal: 1,
   sala: 1,
-  puerta: 0,
+  puerta: 1,
 }
 
 app.get("/", (req, res) => {
