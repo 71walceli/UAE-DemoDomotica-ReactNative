@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import { absolutePositionFactory, styles } from "./styles";
 import React from "react";
-import { AscensorSwitch, LightbulbSwitch, PuertaSwitch } from "./Switch";
+import { AscensorSwitch, LightbulbSwitch, PuertaBotón } from "./Switch";
 import { Cocina, Comedor, Muebles, ServicioHigiénico } from "./Assets";
 
 export const Piso0 = () => (
@@ -107,7 +107,7 @@ export const Piso0 = () => (
             )}
           >
             <Text>Puerta</Text>
-            <PuertaSwitch controlId="puerta" />
+            <PuertaBotón controlId="puerta" />
           </View>
           <View
             style={StyleSheet.compose(styles.Table.cell, {
