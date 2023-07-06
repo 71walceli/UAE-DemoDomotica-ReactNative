@@ -19,6 +19,10 @@ export default function App() {
     sala: 1,
     puerta: 0,
   });
+  const cooldownTimeouts = {
+    puerta: 10000,
+    ascensor: 7000,
+  }
   const [config, setConfig] = React.useState({
     apiAddress: "192.168.0.100",
   });
@@ -34,7 +38,7 @@ export default function App() {
     return () => clearInterval(timeout);
   }, [ready]);
 
-  const handleControlChange = (control, value, onCooldown) => {
+  const handleControlChange = (control, value) => {
     const numberValue = Number(value);
     const fetchUrl =
       ([
@@ -49,7 +53,7 @@ export default function App() {
       (["ascensor"].includes(control) &&
         `http://${config.apiAddress}/ascensor?piso=${1 + numberValue}`) ||
       (["puerta"].includes(control) &&
-        `http://${config.apiAddress}/abrirPuerta`);
+        `http://${config.apiAddress}/${controls.puerta ? "cerrar" : "abrir"}Puerta`);
     if (!fetchUrl) return;
     fetch(fetchUrl)
       .then((response) => response.json())
@@ -59,17 +63,6 @@ export default function App() {
         } else {
           setControls((actualValues) => {
             console.log({ [control]: value });
-            if (!onCooldown && control === "ascensor") {
-              setTimeout(
-                () => handleControlChange(control, !value, true),
-                15000
-              );
-            } else if (!onCooldown && control === "puerta") {
-              setTimeout(
-                () => handleControlChange(control, !value, true),
-                7000
-              );
-            }
             return {
               ...actualValues,
               [control]: value,
@@ -90,7 +83,7 @@ export default function App() {
   return (
     <>
       <AppContext.Provider
-        value={{ controls, handleControlChange, config, setConfig }}
+        value={{ controls, handleControlChange, config, setConfig, cooldownTimeouts }}
       >
         <View style={styles.centerElements}>
           <View style={styles.fullSize}>
@@ -132,13 +125,13 @@ export default function App() {
                   }}
                 />
                 <Tabs.Screen
-                  name="Configuracióón"
+                  name="Configuración"
                   component={Config}
                   options={{
-                    tabBarLabel: "Acerca de...",
+                    tabBarLabel: "Configuración",
                     tabBarIcon: ({ color, size }) => (
                       <MaterialCommunityIcons
-                        name="beaker-question"
+                        name="cog-outline"
                         color={color}
                         size={size}
                       />
