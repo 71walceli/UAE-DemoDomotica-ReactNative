@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { Piso0 } from "./Piso0";
 import { Piso1 } from "./Piso1";
 import React from "react";
@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Config, AppContext } from "./Config";
+import { Modal } from "./Modal";
 
 export default function App() {
   const Tabs = createBottomTabNavigator();
@@ -20,12 +21,13 @@ export default function App() {
     puerta: 0,
   });
   const cooldownTimeouts = {
-    puerta: 10000,
-    ascensor: 7000,
+    puerta: 5000,
+    ascensor: 2000,
   }
   const [config, setConfig] = React.useState({
     apiAddress: "192.168.0.100",
   });
+  const [busy, setBusy] = React.useState(false)
 
   const [ready, setReady] = React.useState(false);
   React.useState(() => {
@@ -69,6 +71,10 @@ export default function App() {
             };
           });
         }
+        if (cooldownTimeouts[control]) {
+          setBusy(true)
+          setTimeout(() => setBusy(false), cooldownTimeouts[control])
+        }
       });
   };
 
@@ -87,7 +93,6 @@ export default function App() {
       >
         <View style={styles.centerElements}>
           <View style={styles.fullSize}>
-            {/* <StatusBar style="auto" /> */}
             <NavigationContainer>
               <Tabs.Navigator
                 initialRouteName="Planta Baja"
@@ -140,9 +145,11 @@ export default function App() {
                 />
               </Tabs.Navigator>
             </NavigationContainer>
-            {/* {piso ? <Piso1 /> : <Piso0 />} */}
           </View>
         </View>
+        <Modal visible={busy} onRequestClose={() => setBusy(false)} style={styles.centerElements}>
+          <ActivityIndicator animating={busy} size="large" style={styles.centerElements} />
+        </Modal>
       </AppContext.Provider>
     </>
   );

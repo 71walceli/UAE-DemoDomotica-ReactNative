@@ -1,6 +1,6 @@
 import React from "react";
-import { Form, FormItem, Modal } from "react-native-form-component";
-import { Button } from "react-native";
+import { Form, FormItem } from "react-native-form-component";
+import { Button, Modal } from "react-native";
 //import Modal from "react-native-form-component";
 import { About } from "./About";
 
@@ -23,7 +23,7 @@ export const Config = () => {
           asterik
         />
         <Button title="Acerca de ..." onPress={() => setShowModal(true)} />
-        <Modal show={showModal} onRequestClose={() => setShowModal(false)}>
+        <Modal visible={showModal} onRequestClose={() => setShowModal(false)}>
           <About />
         </Modal>
       </Form>

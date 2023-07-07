@@ -1,25 +1,20 @@
-import { Button, Switch as RNSwitch, Text, View } from "react-native";
+import { Button, Pressable, Switch as RNSwitch, Text, View } from "react-native";
 import { lightBulbOff, lightBulbOn } from "./Assets";
 import { Image, StyleSheet } from "react-native";
 import React from "react";
 import { AppContext } from "./Config";
 import PropTypes from "prop-types";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export const Switch = ({ controlId, ...props }) => {
   const { controls, handleControlChange, cooldownTimeouts } = React.useContext(AppContext);
-  const [disabled, setDisabled] = React.useState(false)
 
   return (
     <>
       <RNSwitch
-        disabled={disabled}
         value={Boolean(controls?.[controlId])}
         onValueChange={(v) => {
           handleControlChange(controlId, Number(v));
-          if (cooldownTimeouts[controlId]) {
-            setDisabled(true)
-            setTimeout(() => setDisabled(false), cooldownTimeouts[controlId])
-          }
         }}
         {...props}
       />
@@ -66,26 +61,8 @@ LightbulbSwitch.propTypes = {
   controlId: PropTypes.string.isRequired,
 };
 
-export const AscensorSwitch = ({ controlId, ...props }) => {
-  const { controls } = React.useContext(AppContext);
-
-  return (
-    <View
-      style={StyleSheet.compose({
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      })}
-    >
-      <Switch controlId={controlId} {...props} />
-      <Text>{(controls[controlId] && "Piso 1") || "Planta Baja"}</Text>
-    </View>
-  );
-};
-
-export const PuertaBotón = ({ controlId, ...props }) => {
+export const AscensorBoton = ({ controlId, ...props }) => {
   const { controls, handleControlChange, cooldownTimeouts } = React.useContext(AppContext);
-  const [disabled, setDisabled] = React.useState(false)
   
   return (
     <View
@@ -95,20 +72,54 @@ export const PuertaBotón = ({ controlId, ...props }) => {
         alignItems: "center",
       })}
     >
-      <Button title={(!controls[controlId] && "Cerrar") || "Abrir"} disabled={disabled}
+      <Pressable
+        style={StyleSheet.compose({
+          borderRadius: 7,
+          padding: 10,
+          elevation: 2,
+          backgroundColor: "#01b7a6",
+        })}
         onPress={() => {
           const value = Boolean(controls[controlId])
           handleControlChange(controlId, Number(!value))
-          if (cooldownTimeouts[controlId]) {
-            setDisabled(true)
-            setTimeout(() => setDisabled(false), cooldownTimeouts[controlId])
-          }
         }}
-      />
+      >
+        <Text size={24}>{controls[controlId] ? "P1" : "PB"}</Text>
+      </Pressable>
     </View>
   );
 };
-AscensorSwitch.propTypes = {
+
+export const PuertaBotón = ({ controlId, ...props }) => {
+  const { controls, handleControlChange, cooldownTimeouts } = React.useContext(AppContext);
+  
+  return (
+    <View
+      style={StyleSheet.compose({
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      })}
+    >
+      <Pressable
+        style={StyleSheet.compose({
+          borderRadius: 7,
+          padding: 10,
+          elevation: 2,
+          backgroundColor: "#01b7a6",
+        })}
+        onPress={() => {
+          const value = Boolean(controls[controlId])
+          handleControlChange(controlId, Number(!value))
+        }}
+      >
+        <MaterialCommunityIcons 
+          name={`door-${!controls[controlId] ? "closed" : "open"}`} size={24} />
+      </Pressable>
+    </View>
+  );
+};
+AscensorBoton.propTypes = {
   controlId: PropTypes.string.isRequired,
 };
 

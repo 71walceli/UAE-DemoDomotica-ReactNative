@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import { absolutePositionFactory, styles } from "./styles";
 import React from "react";
-import { AscensorSwitch, LightbulbSwitch, PuertaBotón } from "./Switch";
+import { AscensorBoton, LightbulbSwitch, PuertaBotón } from "./Switch";
 import { Cocina, Comedor, Muebles, ServicioHigiénico } from "./Assets";
 
 export const Piso0 = () => (
@@ -92,8 +92,7 @@ export const Piso0 = () => (
                 })}
               >
                 <View style={styles.Table.cell}>
-                  <Text>Ascensor</Text>
-                  <AscensorSwitch controlId="ascensor" />
+                  <AscensorBoton controlId="ascensor" />
                 </View>
               </View>
             </View>
