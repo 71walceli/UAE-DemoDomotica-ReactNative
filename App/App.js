@@ -54,9 +54,9 @@ export default function App() {
         `http://${config.apiAddress}/luz?nombre=${control}&estado=${numberValue}`) ||
       (["ascensor"].includes(control) &&
         `http://${config.apiAddress}/ascensor?piso=${1 + numberValue}`) ||
-      (["puerta"].includes(control) &&
+      ((["puerta"].includes(control) && !controls.puerta) &&
         `http://${config.apiAddress}/${controls.puerta ? "cerrar" : "abrir"}Puerta`);
-    if (!fetchUrl) return;
+    if (!fetchUrl) return
     fetch(fetchUrl)
       .then((response) => response.json())
       .then((data) => {
@@ -69,11 +69,14 @@ export default function App() {
               ...actualValues,
               [control]: value,
             };
-          });
+          })
         }
         if (cooldownTimeouts[control]) {
           setBusy(true)
-          setTimeout(() => setBusy(false), cooldownTimeouts[control])
+          setTimeout(() => {
+            if (control === "puerta") setControls(previous => ({...previous, puerta: 0}))
+            setBusy(false);
+          }, cooldownTimeouts[control])
         }
       });
   };
@@ -98,7 +101,6 @@ export default function App() {
                 initialRouteName="Planta Baja"
                 screenOptions={{
                   tabBarActiveTintColor: "#e91e63",
-                  //headerStyle: { color: "red" },
                 }}
               >
                 <Tabs.Screen
@@ -158,9 +160,11 @@ export default function App() {
     fetch(`http://${config.apiAddress}`)
       .then((response) => response.json())
       .then((response) =>
-        setControls(() => {
-          const _state = { ...response.state };
+        setControls((previous) => {
+          const _state = { ...previous, ...response.state };
           _state.ascensor -= 1;
+          _state.puerta = previous.puerta
+          console.log(_state.puerta)
           return _state;
         })
       )

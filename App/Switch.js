@@ -89,6 +89,9 @@ export const AscensorBoton = ({ controlId, ...props }) => {
     </View>
   );
 };
+AscensorBoton.propTypes = {
+  controlId: PropTypes.string.isRequired,
+};
 
 export const PuertaBotón = ({ controlId, ...props }) => {
   const { controls, handleControlChange, cooldownTimeouts } = React.useContext(AppContext);
@@ -114,15 +117,11 @@ export const PuertaBotón = ({ controlId, ...props }) => {
         }}
       >
         <MaterialCommunityIcons 
-          name={`door-${!controls[controlId] ? "closed" : "open"}`} size={24} />
+          name={`door-${controls[controlId] ? "open" : "closed"}`} size={24} />
       </Pressable>
     </View>
   );
 };
-AscensorBoton.propTypes = {
-  controlId: PropTypes.string.isRequired,
-};
-
 PuertaBotón.propTypes = {
   controlId: PropTypes.string.isRequired,
 };
